@@ -15,6 +15,10 @@ export class Snake {
     // TODO: move snake forward by this.direction;
   }
 
+  setDirection(direction: SnakeDirection) {
+    this.direction = direction;
+  }
+
   public onGrow() {}
 
   public onCrash() {}

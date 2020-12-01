@@ -1,12 +1,17 @@
 export type Matrix = CellType[][];
 
+export enum GrassColor {
+  Dark = 'rgb(162,209,73)',
+  Light = 'rgb(130, 195, 84)', // rgb(170, 215, 81)
+}
+
 export enum CellType {
   Snake = 'SNAKE_CELL',
   Food = 'FOOD_CELL',
   Empty = 'EMPTY_CELL',
 }
 
-export interface MatrixCoordinates {
+export interface MatrixPosition {
   row: number;
   column: number;
 }
@@ -34,7 +39,7 @@ export function createMatrixCells(matrix: Matrix, count: number) {
 }
 
 export function tryFillInMatrix(matrix: Matrix, value: CellType): Matrix {
-  if (!isValid(matrix)) throwError('Invalid matrix');
+  if (!isValid(matrix)) throwError('Invalid matrix. It must contain at least few arrays with content');
   return fillInMatrixCells(matrix, value);
 }
 
@@ -52,6 +57,6 @@ function fillInMatrixCells(matrix: Matrix, value: CellType) {
   );
 }
 
-export function fillInMatrixCell(matrix: Matrix, { row, column }: MatrixCoordinates, newValue: CellType) {
+export function fillInMatrixCell(matrix: Matrix, { row, column }: MatrixPosition, newValue: CellType) {
   matrix[row][column] = newValue;
 }

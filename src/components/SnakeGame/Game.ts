@@ -19,7 +19,7 @@ export class Game {
   }
 
   private determinePlayFieldSize() {
-    this.playFieldSize = '800px';
+    this.playFieldSize = '800px'; // TODO: change zoom css property on small screens
   }
 
   public get styles() {

@@ -10,7 +10,15 @@ function SnakeGame() {
   return (
     <div style={game.styles} className="Game">
       {
-        matrix.map((matrixRow, idx) => <MatrixRow key={idx} cells={matrixRow} cellSize={100 / game.matrixSize} />)
+        matrix.map((matrixRow, idx) => (
+            <MatrixRow
+              key={idx}
+              cells={matrixRow}
+              cellSize={100 / game.matrixSize}
+              rowIndex={idx}
+            />
+          )
+        )
       }
     </div>
   );
