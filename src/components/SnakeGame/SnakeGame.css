@@ -1,10 +1,49 @@
-.Game {
+.Game {}
+
+.GameActionsBar {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    padding: 5px 10px;
+    background-color: skyblue;
+    border-bottom: 1px solid black;
+}
+
+.GameBoard {
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
-    background-color: royalblue;
+    background-color: dodgerblue;
     border: 1px solid black;
+}
+
+.TrophyIcon {
+    display: flex;
+    height: 64px;
+    width: 84px;
+    padding-left: 5px;
+}
+
+.TrophyIcon i {
+    max-height: 64px!important;
+    max-width: 64px!important;
+}
+
+.middle-nes-text {
+    font-size: 33px;
+}
+
+@media screen and (max-width: 800px) {
+    .Game {
+        zoom: 60%;
+    }
+}
+
+@media screen and (max-width: 600px) {
+    .Game {
+        zoom: 44%;
+    }
 }

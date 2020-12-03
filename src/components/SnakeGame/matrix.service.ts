@@ -6,7 +6,7 @@ export enum GrassColor {
 }
 
 export enum CellType {
-  Snake = 'SNAKE_CELL',
+  Dummy = 'DUMMY_CELL',
   Food = 'FOOD_CELL',
   Empty = 'EMPTY_CELL',
 }

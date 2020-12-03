@@ -1,7 +1,15 @@
+import { MatrixPosition } from './matrix.service';
+
+interface FoodProps {
+  position: MatrixPosition,
+}
+
 export class Food {
-  public eat() {}
+  constructor({ position }: FoodProps) {}
 
   public onTouch() {}
+
+  private clear() {}
 }
 
 export class Apple extends Food {

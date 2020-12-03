@@ -1,8 +1,9 @@
 import MatrixCell from '../MatrixCell/MatrixCell';
 import './MatrixRow.css';
+import { CellType } from '../SnakeGame/matrix.service';
 
 interface Props {
-  cells: string[];
+  cells: CellType[];
   cellSize: number;
   rowIndex: number;
 }
@@ -12,7 +13,7 @@ export default function MatrixRow({ cells, cellSize, rowIndex }: Props) {
     <div className="MatrixRow" style={{ maxHeight: cellSize + '%' }}>
       {
         cells.map(
-          (cellContent: string, columnIndex: number) => (
+          (cellContent: CellType, columnIndex: number) => (
             <MatrixCell
               key={columnIndex}
               cell={{
