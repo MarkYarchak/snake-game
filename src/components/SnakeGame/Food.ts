@@ -1,11 +1,12 @@
-import { MatrixPosition } from './matrix.service';
+import { MatrixPosition, Matrix } from './matrix.service';
 
-interface FoodProps {
+export interface FoodParams {
   position: MatrixPosition,
+  connectedMatrix: Matrix,
 }
 
 export class Food {
-  constructor({ position }: FoodProps) {}
+  constructor({ position, connectedMatrix }: FoodParams) {}
 
   public onTouch() {}
 

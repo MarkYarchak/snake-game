@@ -1,7 +1,7 @@
-import { DummyDirection } from './Dummy';
-import { setDummyDirection } from './dummy.service';
-import { game } from './SnakeGame';
-import { GameStatus } from "./Game";
+import {DummyDirection} from './Dummy';
+import {setDummyDirection} from './dummy.service';
+import {blurDialogMenu, game, openPauseDialog} from './SnakeGame';
+import {GameStatus} from './Game';
 
 const InvolvedKeysWithActions = new Map([
   ['ArrowUp', DummyDirection.Top],
@@ -51,14 +51,15 @@ function clearKeyDownHandlers() {
 
 function keyDownHandler($event: KeyboardEvent) {
   if (isGameSystemKey($event)) return gameSystemKeysController($event);
-  if (isInvolvedKey($event) && !pausedGameProcess()) {
-    const newDummyDirection: DummyDirection = InvolvedKeysWithActions.get($event.key)!;
-    setDummyDirection(newDummyDirection);
-  }
+  if (isInvolvedKey($event)) createGameActions($event);
 }
 
 function isGameSystemKey($event: KeyboardEvent): boolean {
   return GameSystemKeyCodesWithActions.has($event.code);
+}
+
+function isInvolvedKey($event: KeyboardEvent): boolean {
+  return InvolvedKeysWithActions.has($event.key);
 }
 
 function gameSystemKeysController($event: KeyboardEvent) {
@@ -66,18 +67,39 @@ function gameSystemKeysController($event: KeyboardEvent) {
   action();
 }
 
-function isInvolvedKey($event: KeyboardEvent): boolean {
-  return InvolvedKeysWithActions.has($event.key);
+function createGameActions($event: KeyboardEvent) {
+  if (!pausedGameProcess()) {
+    const newDummyDirection: DummyDirection = InvolvedKeysWithActions.get($event.key)!;
+    if (isNewGameProcess() && newDummyDirection === DummyDirection.Left) return;
+    setDummyDirection(game.dummy, newDummyDirection);
+  }
+  if (isNewGameProcess()) {
+    game.start();
+  }
+}
+
+function isNewGameProcess() {
+  return game.status === GameStatus.Initialized || game.status === GameStatus.Restarted;
 }
 
 function pausedGameProcess(): boolean {
   return game.status === GameStatus.Stopped;
 }
 
-function pauseGameProcess() {
-  game.stop();
+function runningGameProcess(): boolean {
+  return game.status === GameStatus.Running;
 }
 
-function resumeGameProcess() {
-  game.resume();
+export function pauseGameProcess() {
+  if (!runningGameProcess() && !pausedGameProcess()) {
+    game.stop();
+    openPauseDialog();
+    blurDialogMenu();
+  }
+}
+
+export function resumeGameProcess() {
+  if (pausedGameProcess()) {
+    game.resume();
+  }
 }

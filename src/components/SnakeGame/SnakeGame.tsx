@@ -1,17 +1,44 @@
 import { useState } from 'react';
-import { Game } from './Game';
+import {Game} from './Game';
 import MatrixRow from '../MatrixRow/MatrixRow';
 import './SnakeGame.css';
+import {pauseGameProcess, resumeGameProcess} from './game.service';
+import {DummyType} from './dummy.service';
+import {FoodType} from './food.service';
 
 export let game: Game = createNewGame()
 
 function createNewGame(): Game {
   const defaultMatrixSize = 30;
-  return new Game({ matrixSize: defaultMatrixSize })
+  return new Game({
+    matrixSize: defaultMatrixSize,
+    dummyType: DummyType.Snake,
+    foodType: FoodType.Apple,
+  });
+}
+
+export let renderNewMatrix: any;
+
+export function blurDialogMenu() {
+  // @ts-ignore
+  document.getElementById('success_select').blur();
+}
+
+export function openPauseDialog() {
+  // @ts-ignore
+  document.getElementById('dialog-rounded')?.showModal();
+}
+
+export function closePauseDialog() {
+  // @ts-ignore
+  document.getElementById('dialog-rounded').close();
 }
 
 function SnakeGame() {
   const [matrix, updateMatrix] = useState(game.matrix);
+  renderNewMatrix = updateMatrix;
+
+  game.addDummy(DummyType.Snake);
 
   function restartGame() {
     game.restart();
@@ -19,13 +46,12 @@ function SnakeGame() {
   }
 
   function onSettingsClick() {
-    // @ts-ignore
-    document.getElementById('dialog-rounded')?.showModal();
+    pauseGameProcess();
   }
 
-  function closePauseDialog() {
-    // @ts-ignore
-    document.getElementById('dialog-rounded').close();
+  function applyGameSetting() {
+    // TODO: apply settings from dialog
+    resumeGameProcess();
   }
 
   return (
@@ -35,7 +61,7 @@ function SnakeGame() {
           <i className="nes-icon is-large trophy no-margin" />
         </div>
 
-        <span className="nes-text middle-nes-text">{ game.maxScore }</span>
+        <span className="nes-text middle-nes-text">{ game.score }</span>
 
         <div style={{ flexGrow: 1 }} />
 
@@ -44,7 +70,9 @@ function SnakeGame() {
           className="nes-btn is-error"
           style={{ height: '50px' }}
           onClick={restartGame}
-        >Restart game</button>
+        >
+          Restart game
+        </button>
 
         <section>
           <button
@@ -73,8 +101,8 @@ function SnakeGame() {
               </div>
 
               <menu className="dialog-menu" style={{ padding: '14px 20px 0' }}>
-                <button className="nes-btn" style={{ marginRight: '12px' }} onClick={closePauseDialog}>Cancel</button>
-                <button className="nes-btn is-primary" style={{ marginLeft: '12px', padding: '6px 24px' }}>Save</button>
+                <button className="nes-btn" style={{ marginRight: '12px' }} onClick={resumeGameProcess}>Cancel</button>
+                <button className="nes-btn is-primary" style={{ marginLeft: '12px', padding: '6px 24px' }} onClick={applyGameSetting}>Save</button>
               </menu>
             </form>
           </dialog>
@@ -83,7 +111,7 @@ function SnakeGame() {
 
       <div style={game.boardStyles} className="GameBoard">
         {
-          matrix.map((matrixRow, idx) => (
+          (matrix || game.matrix).map((matrixRow, idx) => (
               <MatrixRow
                 key={idx}
                 cells={matrixRow}

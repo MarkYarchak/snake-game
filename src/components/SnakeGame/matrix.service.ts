@@ -1,3 +1,5 @@
+import { renderNewMatrix } from './SnakeGame';
+
 export type Matrix = CellType[][];
 
 export enum GrassColor {
@@ -59,4 +61,5 @@ function fillInMatrixCells(matrix: Matrix, value: CellType) {
 
 export function fillInMatrixCell(matrix: Matrix, { row, column }: MatrixPosition, newValue: CellType) {
   matrix[row][column] = newValue;
+  // renderNewMatrix(matrix);
 }
